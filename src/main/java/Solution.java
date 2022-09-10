@@ -5,8 +5,11 @@ import java.util.List;
 
 public class Solution {
     HashMap<Integer, String> map = new HashMap<>();
+
     public List<String> letterCombinations(String digits) {
         List<String> result = new ArrayList<>();
+        map.put(0, "0");
+        map.put(1, "1");
         map.put(2, "abc");
         map.put(3, "def");
         map.put(4, "ghi");
