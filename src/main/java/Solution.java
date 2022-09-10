@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Solution {
     HashMap<Integer, String> map = new HashMap<>();
-
     public List<String> letterCombinations(String digits) {
         List<String> result = new ArrayList<>();
         map.put(2, "abc");
@@ -17,20 +16,6 @@ public class Solution {
         map.put(8, "tuv");
         map.put(9, "wxyz");
         return func2(result, digits, 0);
-    }
-
-
-    public List<String> func1(String s) {
-        List<String> result = new ArrayList<>();
-        map.put(2, "abc");
-        map.put(3, "def");
-        map.put(4, "ghi");
-        map.put(5, "jkl");
-        map.put(6, "mno");
-        map.put(7, "pqrs");
-        map.put(8, "tuv");
-        map.put(9, "wxyz");
-        return func2(result, s, 0);
     }
 
     public List<String> func2(List<String> latestList, String s, int currentIndex) {
