@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -9,9 +8,6 @@ public class Solution {
 
     public List<String> letterCombinations(String digits) {
         List<String> result = new ArrayList<>();
-        int resultLength = digits.length() * digits.length() * digits.length();
-        String[] answer = new String[resultLength];
-        if (digits.length() == 0) return result;
         map.put(2, "abc");
         map.put(3, "def");
         map.put(4, "ghi");
@@ -20,57 +16,47 @@ public class Solution {
         map.put(7, "pqrs");
         map.put(8, "tuv");
         map.put(9, "wxyz");
-        if (digits.length() == 1) {
-            int i = Character.getNumericValue(digits.charAt(0));
-            for (Character c : map.get(i).toCharArray()) {
-                result.add(c.toString());
-            }
-            return result;
-        }
-        String[] input = new String[digits.length()];
-        int count = 0;
-        for (Character c : digits.toCharArray()) {
-            input[count] = map.get(Character.getNumericValue(c));
-            count++;
-        }
-        count = 0;
-        StringBuilder sb = new StringBuilder();
-
-        answer[count] = input[count];
-        for (int i = 0; i < input.length - 1; i++) {
-            answer = connect(answer[count], input[i + 1]);
-        }
-        for (String s : answer) result.add(s);
-        return result;
+        return func2(result, digits, 0);
     }
 
-    // take in two string arrays, concatenate the strings into a larger array and return it
-    /*private String[] connect(String[] sa1, String[] sa2) {
-        StringBuilder sb = new StringBuilder();
-        String[] result = new String[sa1.length * sa2.length];
-        int count = 0;
-        for (String s1 : sa1)
-            for (String s2 : sa2) {
-                sb.append(s1);
-                sb.append(s2);
-                result[count] = sb.toString();
-            }
-        return result;
-    }*/
 
-    private String[] connect(String s1, String s2) {
-        StringBuilder sb = new StringBuilder();
-        String[] result = new String[s1.length() * s2.length()];
-        int count = 0;
-        for (Character c1 : s1.toCharArray())
-            for (Character c2 : s2.toCharArray()) {
-                sb.append(c1);
-                sb.append(c2);
-                result[count] = sb.toString();
-                count++;
-                sb = new StringBuilder();
+    public List<String> func1(String s) {
+        List<String> result = new ArrayList<>();
+        map.put(2, "abc");
+        map.put(3, "def");
+        map.put(4, "ghi");
+        map.put(5, "jkl");
+        map.put(6, "mno");
+        map.put(7, "pqrs");
+        map.put(8, "tuv");
+        map.put(9, "wxyz");
+        return func2(result, s, 0);
+    }
+
+    public List<String> func2(List<String> latestList, String s, int currentIndex) {
+        if (currentIndex >= s.length()) return latestList;
+        int currentInteger = Character.getNumericValue(s.charAt(currentIndex));
+        currentIndex++;
+        String currentString = map.get(currentInteger);
+        if (s.length() == 1) {
+            for (Character c : currentString.toCharArray()) {
+                latestList.add("" + c);
             }
-        return result;
+        } else if (latestList.size() >= 1) {
+            List<String> newList = new ArrayList<String>();
+            for (String newString : latestList) {
+                // latestList.add(currentString.concat(newString));
+                for (Character c : currentString.toCharArray()) {
+                    newList.add(newString.concat("" + c));
+                }
+            }
+            latestList = newList;
+        } else {
+            for (Character c : currentString.toCharArray()) {
+                latestList.add("" + c);
+            }
+        }
+        return func2(latestList, s, currentIndex);
     }
 
     public static void main(String[] args) {
@@ -81,8 +67,9 @@ public class Solution {
         Solution s = new Solution();
         System.out.println(s.letterCombinations(test1));
         System.out.println(s.letterCombinations(test2));
-        System.out.println(s.letterCombinations(test3));
         // expecting ["adg","adh","adi","aeg","aeh","aei","afg","afh","afi","bdg","bdh","bdi","beg","beh","bei","bfg","bfh","bfi","cdg","cdh","cdi","ceg","ceh","cei","cfg","cfh","cfi"]
-        System.out.println(s.letterCombinations(test4));
+        System.out.println(s.letterCombinations(test3));
+        System.out.println("Expecting: expecting [\"adg\",\"adh\",\"adi\",\"aeg\",\"aeh\",\"aei\",\"afg\",\"afh\",\"afi\",\"bdg\",\"bdh\",\"bdi\",\"beg\",\"beh\",\"bei\",\"bfg\",\"bfh\",\"bfi\",\"cdg\",\"cdh\",\"cdi\",\"ceg\",\"ceh\",\"cei\",\"cfg\",\"cfh\",\"cfi\"] " +
+                "\n getting: " + s.letterCombinations(test4));
     }
 }
